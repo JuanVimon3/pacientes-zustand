@@ -1,13 +1,17 @@
 import { useForm } from "react-hook-form"
 import Error from "./Error";
 import type { DraftPatient } from "../types";
+import { usePatientStore } from "../store";
+
 
 export default function PatientForm() {
+
+    const addPatient = usePatientStore(state => state.addPatient); // Extraemos la función addPatient del store (TAMBIÉN PODRÍAMOS EXTRAER LA INFORMACIÓN USANDO DESTRUCTURING: const { addPatient } = usePatientStore();)
 
     const { register, handleSubmit, formState: { errors } } = useForm<DraftPatient>();
 
     const registerPatient = (data: DraftPatient) => {
-        console.log(data)
+        addPatient(data);
     }
 
     return (
@@ -103,7 +107,7 @@ export default function PatientForm() {
                             required: 'La fecha de alta es obligatoria'
                         })}
                     />
-                     {errors.date && (
+                    {errors.date && (
                         <Error>
                             {errors.date?.message}
                         </Error>
